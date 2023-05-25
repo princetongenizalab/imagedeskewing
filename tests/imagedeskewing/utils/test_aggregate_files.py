@@ -1,9 +1,9 @@
 import os
 import unittest
-from imagedeskewing.utils.count_files import count_file_type
+from imagedeskewing.utils.aggregate_files import count_file_type
 
 
-class TestCountFiles(unittest.TestCase):
+class TestAggregateFiles(unittest.TestCase):
     def setUp(self):
         """
         Set up the testing environment before each test case.
