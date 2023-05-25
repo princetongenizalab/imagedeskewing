@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 
 
 def count_file_type(dir_path, file_extension):
@@ -38,5 +39,36 @@ def count_file_type(dir_path, file_extension):
     return count
 
 
+def count_all_file_types(dir_path):
+    """
+    Recursively traverses the input directory and counts the frequency of each file type.
+
+    Parameters
+    ----------
+    dir_path : str
+        The path of the directory to search in.
+
+    Returns
+    -------
+    dict
+        A dictionary with the file extensions as keys and their counts as values.
+
+    Examples
+    --------
+    >>> path = "/path/to/your/directory"
+    >>> print(count_all_file_types(path))
+    {'.tiff': 5, '.png': 2, '.txt': 10}
+    """
+    count = defaultdict(int)
+
+    for _, _, files in os.walk(dir_path):
+        for file in files:
+            _, extension = os.path.splitext(file)
+            count[extension.lower()] += 1
+
+    return count
+
+
 if __name__ == "__main__":
-    print("This file is not meant to be run directly.")
+    # print("This file is not meant to be run directly.")
+    print(count_all_file_types(r"Y:\HTR deskewing"))
