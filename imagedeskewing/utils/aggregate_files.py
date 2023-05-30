@@ -70,5 +70,4 @@ def count_all_file_types(dir_path):
 
 
 if __name__ == "__main__":
-    # print("This file is not meant to be run directly.")
-    print(count_all_file_types(r"Y:\HTR deskewing"))
+    print("This file is not meant to be run directly.")
