@@ -68,6 +68,7 @@ def count_all_file_types(dir_path):
 
     return count
 
+
 def count_all_file_sizes_by_type(dir_path):
     """
     Recursively traverses the input directory and counts the total disk file size of each file type.
