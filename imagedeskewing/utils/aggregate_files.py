@@ -68,6 +68,36 @@ def count_all_file_types(dir_path):
 
     return count
 
+def count_all_file_sizes_by_type(dir_path):
+    """
+    Recursively traverses the input directory and counts the total disk file size of each file type.
+
+
+    Parameters
+    ----------
+    dir_path : str
+        The path of the directory to search in.
+
+    Returns
+    -------
+    dict
+        A dictionary with the file extensions as keys and their total disk file size in bytes as values.
+
+    Examples
+    --------
+    >>> path = "/path/to/your/directory"
+    >>> print(count_all_file_sizes_by_type(path))
+    {'.tiff': 5000000, '.png': 2000000, '.txt': 10000000}
+    """
+    count = defaultdict(int)
+
+    for root, _, files in os.walk(dir_path):
+        for file in files:
+            _, extension = os.path.splitext(file)
+            count[extension.lower()] += os.path.getsize(os.path.join(root, file))
+
+    return count
+
 
 if __name__ == "__main__":
     print("This file is not meant to be run directly.")
