@@ -2,10 +2,10 @@ import os
 import unittest
 from collections import defaultdict
 
-from imagedeskewing.utils.aggregate_files import count_file_type, count_all_file_types
+from imagedeskewing.utils.directory_analyzer import DirectoryAnalyzer
 
 
-class TestAggregateFiles(unittest.TestCase):
+class TestDirectoryAnalyzer(unittest.TestCase):
     def setUp(self):
         """
         Set up the testing environment before each test case.
@@ -52,7 +52,8 @@ class TestAggregateFiles(unittest.TestCase):
         num_files = 5
         self.create_dummy_files(num_files, self.test_file_extensions[0])
 
-        txt_file_count = count_file_type(self.test_dir, self.test_file_extensions[0])
+        analyzer = DirectoryAnalyzer(self.test_dir)
+        txt_file_count = analyzer.count_file_type(self.test_file_extensions[0])
         self.assertEqual(txt_file_count, num_files)
 
     def test_count_file_type_no_files(self):
@@ -62,7 +63,8 @@ class TestAggregateFiles(unittest.TestCase):
         The function should return 0 when counting the number of '.jpg' files in the test directory,
         since no '.jpg' files were created.
         """
-        jpg_file_count = count_file_type(self.test_dir, ".asdf")
+        analyzer = DirectoryAnalyzer(self.test_dir)
+        jpg_file_count = analyzer.count_file_type(".asdf")
         self.assertEqual(jpg_file_count, 0)
 
     def test_count_all_file_types(self):
@@ -78,7 +80,8 @@ class TestAggregateFiles(unittest.TestCase):
             self.create_dummy_files(num_files, extension)
             expected_counts[extension] = num_files
 
-        actual_counts = count_all_file_types(self.test_dir)
+        analyzer = DirectoryAnalyzer(self.test_dir)
+        actual_counts = analyzer.count_all_file_types()
         self.assertEqual(actual_counts, expected_counts)
 
 
