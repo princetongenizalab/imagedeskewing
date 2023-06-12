@@ -16,3 +16,5 @@ module load anaconda3/2023.3
 module load cudnn/cuda-11.x/8.2.0
 module load cudatoolkit/11.7
 conda activate torch-env
+
+python test.py
