@@ -17,7 +17,7 @@ def main():
     model_weight_path = "/scratch/gpfs/eh0560/imagedeskewing/models/grounding_dino_models/groundingdino_swint_ogc.pth"
     model = load_model(model_config_path, model_weight_path)
 
-    tif_image_paths = find_images("/projects/RUSTOW/htr_deskewing_image_dataset/NEED_DESKEWING", ".tif")
+    tif_image_paths = find_images("/scratch/gpfs/RUSTOW/htr_deskewing_image_dataset/NEED_DESKEWING", ".tif")
     image_path = tif_image_paths[10]
     image_source, image = load_image(image_path)
 
