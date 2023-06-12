@@ -2,6 +2,8 @@ import os
 
 from groundingdino.util.inference import load_model, load_image, predict, annotate
 
+import cv2
+
 def find_images(directory, extension):
     """Returns the abs path to all files with a specified extension in a parent directory"""
     images = []
@@ -34,6 +36,12 @@ def main():
     )
 
     annotated_frame = annotate(image_source=image_source, boxes=boxes, logits=logits, phrases=phrases)
+
+    cv2.imwrite("test.png", annotated_frame)
+
+
+
+
 
 if __name__ == "__main__":
     main()
