@@ -14,7 +14,7 @@ class Image:
 
     Methods
     -------
-    load_image()
+    load_image() -> np.ndarray
         Loads the image from path.
 
     get_image() -> np.ndarray
@@ -31,7 +31,7 @@ class Image:
         self.path = path
         self.image = self.load_image()
 
-    def load_image(self):
+    def load_image(self) -> "np.ndarray":
         """
         Load the image using OpenCV (cv2) library, and convert it to RGB format.
 
@@ -47,8 +47,6 @@ class Image:
         """
         try:
             image = cv2.imread(self.path)
-
-            # Convert the image from BGR to RGB format
             image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             return image_rgb
