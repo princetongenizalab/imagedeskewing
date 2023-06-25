@@ -6,6 +6,7 @@ from imagedeskewing.utils.directory_analyzer import DirectoryAnalyzer
 
 
 class TestDirectoryAnalyzer(unittest.TestCase):
+
     def setUp(self):
         """
         Set up the testing environment before each test case.
@@ -40,7 +41,7 @@ class TestDirectoryAnalyzer(unittest.TestCase):
             The file extension for the dummy files. E.g., '.tiff'.
         """
         for i in range(num_files):
-            with open(os.path.join(self.test_dir, f"dummy{i}{file_extension}"), 'w') as f:
+            with open(os.path.join(self.test_dir, f"dummy{i}{file_extension}"), "w") as f:
                 f.write("This is a dummy file.")
 
     def test_count_file_type(self):
