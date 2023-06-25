@@ -17,7 +17,7 @@ class Image:
     load_image()
         Loads the image from path.
 
-    get_image()
+    get_image() -> np.ndarray
         Returns the image data.
     """
 
@@ -56,7 +56,7 @@ class Image:
         except FileNotFoundError:
             print(f"The specified image file {self.path} was not found.")
 
-    def get_image(self):
+    def get_image(self) -> "np.ndarray":
         """
         Get the loaded image data.
 
