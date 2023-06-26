@@ -68,7 +68,7 @@ class BoundingBoxGenerator:
         np.ndarray
             Annotated image with bounding boxes and segmentation annotations.
         """
-        image = Image(image_path=image_path)
+        image = Image(image_path)
         detections, phrases = self.model.predict_with_caption(
             image=image,
             caption=text_prompt,
