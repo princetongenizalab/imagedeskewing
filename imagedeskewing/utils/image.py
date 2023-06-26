@@ -2,6 +2,8 @@ import os
 import cv2
 import numpy as np
 from skimage.transform import rotate
+from skimage.util import img_as_ubyte
+
 
 class Image:
     """
@@ -108,4 +110,5 @@ class Image:
         np.ndarray
             The rotated image data.
         """
-        return rotate(self.image, angle, resize=True, preserve_range=True)
+        rotated = rotate(self.image, angle, resize=True, preserve_range=True)
+        return img_as_ubyte(rotated)
