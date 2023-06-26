@@ -29,7 +29,7 @@ def deskew_image(image_path: str, output_path: str):
     ########################
 
     bbg = BoundingBoxGenerator(grounding_dino_config_path, grounding_dino_weight_path)
-    detections = bbg.generate_bounding_boxes(image.as_array())
+    detections = bbg.find_objects(image.as_array())
 
     isg = InstanceSegmentationGenerator(model_type, sam_checkpoint_path)
     detections.mask = isg.segment_objects(image.as_array(), detections.xyxy)
