@@ -20,6 +20,12 @@ class Image:
         Loads the image from path.
     as_array() -> np.ndarray
         Returns the image data as a numpy array.
+    rotate(angle: float) -> np.ndarray
+        Rotates the image by the specified angle.
+    get_height() -> int
+        Returns the height of the image.
+    get_width() -> int
+        Returns the width of the image.
     """
 
     def __init__(self, path):
@@ -31,6 +37,28 @@ class Image:
         """
         self.path = path
         self.image = self.load_image()
+
+    def get_height(self) -> int:
+        """
+        Get the height of the image.
+
+        Returns
+        -------
+        int
+            The height of the image.
+        """
+        return self.image.shape[0]
+
+    def get_width(self) -> int:
+        """
+        Get the width of the image.
+
+        Returns
+        -------
+        int
+            The width of the image.
+        """
+        return self.image.shape[1]
 
     def load_image(self) -> np.ndarray:
         """
