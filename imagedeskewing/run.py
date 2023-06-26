@@ -26,10 +26,14 @@ def deskew_image(image_path: str, output_path: str):
 
     sam_checkpoint_path = "../../models/sam_models/sam_vit_h_4b8939.pth"
     model_type = "vit_h"
+
+    text_prompt = "old brown paper"
+    box_threshold = 0.50
+    text_threshold = 0.25
     ########################
 
     bbg = BoundingBoxGenerator(grounding_dino_config_path, grounding_dino_weight_path)
-    detections = bbg.find_objects(image.as_array())
+    detections = bbg.find_objects(image.as_array(), text_prompt, box_threshold, text_threshold)
 
     isg = InstanceSegmentationGenerator(model_type, sam_checkpoint_path)
     detections.mask = isg.segment_objects(image.as_array(), detections.xyxy)
