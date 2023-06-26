@@ -47,11 +47,18 @@ def deskew_image(image_path: str, output_path: str):
     x1 = detections.xyxy[:, 2].max()
     y1 = detections.xyxy[:, 3].max()
 
+    # adding padding
+    x0 = max(0, x0 - 10)
+    y0 = max(0, y0 - 10)
+    x1 = min(image.get_width(), x1 + 10)
+    y1 = min(image.get_height(), y1 + 10)
+
     cropped_image = image.as_array()[y0:y1, x0:x1]
 
     skew_angle = calculate_skew_angle(cropped_image)
-    rotated_image = image.rotate(skew_angle)
-    bgr_image = cv2.cvtColor(rotated_image, cv2.COLOR_RGB2BGR)
+    rotated_image = image.rotated(skew_angle)
+
+    bgr_image = cv2.cvtColor(rotated_image.astype(np.uint8), cv2.COLOR_RGB2BGR)
     cv2.imwrite(output_path, bgr_image)
 
 
