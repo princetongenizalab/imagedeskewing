@@ -59,7 +59,7 @@ def deskew_image(image_path: str, output_path: str):
     skew_angle = calculate_skew_angle(cropped_image)
     rotated_image = image.rotated(skew_angle)
 
-    bgr_image = cv2.cvtColor(rotated_image.astype(np.uint8), cv2.COLOR_RGB2BGR)
+    bgr_image = cv2.cvtColor(rotated_image, cv2.COLOR_RGB2BGR)
     cv2.imwrite(output_path, bgr_image)
 
 
