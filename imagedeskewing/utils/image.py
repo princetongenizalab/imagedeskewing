@@ -18,8 +18,8 @@ class Image:
     load_image() -> np.ndarray
         Loads the image from path.
 
-    get_image() -> np.ndarray
-        Returns the image data.
+    as_array() -> np.ndarray
+        Returns the image data as a numpy array.
     """
 
     def __init__(self, path):
@@ -54,9 +54,9 @@ class Image:
 
         return image_rgb
 
-    def get_image(self) -> "np.ndarray":
+    def as_array(self) -> "np.ndarray":
         """
-        Get the loaded image data.
+        Get the loaded image data as a numpy array.
 
         Returns
         -------
