@@ -20,8 +20,19 @@ def deskew_image(image_path: str, output_path: str):
     """
     image = Image(image_path)
 
-    detections = BoundingBoxGenerator().generate_bounding_boxes(image.as_array())
-    detections.mask = InstanceSegmentationGenerator().segment_objects(image.as_array(), detections.xyxy)
+    #### TEMPORARY CODE ####
+    grounding_dino_config_path = "/scratch/gpfs/eh0560/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+    grounding_dino_weight_path = "/scratch/gpfs/eh0560/imagedeskewing/models/grounding_dino_models/groundingdino_swint_ogc.pth"
+
+    sam_checkpoint_path = "../../models/sam_models/sam_vit_h_4b8939.pth"
+    model_type = "vit_h"
+    ########################
+
+    bbg = BoundingBoxGenerator(grounding_dino_config_path, grounding_dino_weight_path)
+    detections = bbg.generate_bounding_boxes(image.as_array())
+
+    isg = InstanceSegmentationGenerator(model_type, sam_checkpoint_path)
+    detections.mask = isg.segment_objects(image.as_array(), detections.xyxy)
 
     # flatten the masks to a single mask
     mask = np.any(detections.mask, axis=0)
