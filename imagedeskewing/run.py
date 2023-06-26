@@ -1,12 +1,11 @@
 import argparse
-import cv2
 import numpy as np
 
 from bounding_box_generator import BoundingBoxGenerator
 from instance_segmentation_generator import InstanceSegmentationGenerator
 from utils.image import Image
 from document_skew_estimator import calculate_skew_angle
-
+from skimage.io import imsave
 
 def deskew_image(image_path: str, output_path: str):
     """Deskew an image.
@@ -57,11 +56,8 @@ def deskew_image(image_path: str, output_path: str):
     cropped_image = image.as_array()[y0:y1, x0:x1]
 
     skew_angle = calculate_skew_angle(cropped_image)
-    rotated_image = image.rotated(skew_angle)
 
-    bgr_image = cv2.cvtColor(rotated_image, cv2.COLOR_RGB2BGR)
-    cv2.imwrite(output_path, bgr_image)
-
+    imsave(output_path, image.rotated(skew_angle))
 
 def parse_args():
     pass
