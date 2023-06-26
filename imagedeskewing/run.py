@@ -42,10 +42,10 @@ def deskew_image(image_path: str, output_path: str):
     mask = np.any(detections.mask, axis=0)
 
     # compute the smallest bounding box that contains all the masks
-    x0 = detections.xyxy[:, 0].min()
-    y0 = detections.xyxy[:, 1].min()
-    x1 = detections.xyxy[:, 2].max()
-    y1 = detections.xyxy[:, 3].max()
+    x0 = int(detections.xyxy[:, 0].min())
+    y0 = int(detections.xyxy[:, 1].min())
+    x1 = int(detections.xyxy[:, 2].max())
+    y1 = int(detections.xyxy[:, 3].max())
 
     # adding padding
     x0 = max(0, x0 - 10)
