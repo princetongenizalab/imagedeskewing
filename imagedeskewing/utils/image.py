@@ -113,4 +113,4 @@ class Image:
         np.ndarray
             The rotated image data.
         """
-        return rotate(self.image, angle, resize=True, preserve_range=True)
+        return rotate(self.image, angle, resize=True)
