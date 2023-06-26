@@ -70,7 +70,7 @@ class BoundingBoxGenerator:
         """
         image = Image(image_path)
         detections, phrases = self.model.predict_with_caption(
-            image=image,
+            image=image.as_array(),
             caption=text_prompt,
             box_threshold=box_threshold,
             text_threshold=text_threshold
