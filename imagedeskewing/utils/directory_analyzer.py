@@ -92,7 +92,3 @@ class DirectoryAnalyzer:
             with that extension.
         """
         return dict(self.file_sizes)
-
-
-if __name__ == "__main__":
-    print("This file is not meant to be run directly.")
