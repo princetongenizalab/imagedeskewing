@@ -1,8 +1,7 @@
 import os
-import cv2
 import numpy as np
 from skimage.transform import rotate
-from skimage.util import img_as_ubyte
+from skimage.io import imread
 
 
 class Image:
@@ -79,10 +78,14 @@ class Image:
         if not os.path.exists(self.path):
             raise FileNotFoundError(f"The specified image file {self.path} was not found.")
 
-        image = cv2.imread(self.path)
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = imread(self.path)
 
-        return image_rgb
+        if image.ndim == 2:
+            image = np.stack((image, image, image), axis=-1)
+        elif image.ndim == 3 and image.shape[-1] == 4:
+            image = image[:, :, :3]
+
+        return image
 
     def as_array(self) -> np.ndarray:
         """
@@ -110,5 +113,4 @@ class Image:
         np.ndarray
             The rotated image data.
         """
-        rotated = rotate(self.image, angle, resize=True, preserve_range=True)
-        return img_as_ubyte(rotated)
+        return rotate(self.image, angle, resize=True, preserve_range=True)
