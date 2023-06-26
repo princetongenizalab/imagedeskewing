@@ -36,12 +36,12 @@ class TestImage(unittest.TestCase):
         image = Image(self.temp_image_path)
         self.assertTrue(np.array_equal(image.image, self.temp_image), "Loaded image does not match the original.")
 
-    def test_get_image(self):
+    def test_as_array(self):
         """
-        Tests the get_image method of the Image class.
+        Tests the as_array method of the Image class.
         """
         image = Image(self.temp_image_path)
-        self.assertTrue(np.array_equal(image.get_image(), image.image), "Returned image does not match the stored one.")
+        self.assertTrue(np.array_equal(image.as_array(), image.image), "Returned image does not match the stored one.")
 
     def test_load_non_existent_image(self):
         """
