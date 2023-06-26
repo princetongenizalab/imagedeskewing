@@ -38,16 +38,17 @@ def deskew_image(image_path: str, output_path: str):
     isg = InstanceSegmentationGenerator(model_type, sam_checkpoint_path)
     detections.mask = isg.segment_objects(image.as_array(), detections.xyxy)
 
-    # flatten the masks to a single mask
+    # Flattening all the masks to a single mask.
     mask = np.any(detections.mask, axis=0)
 
-    # compute the smallest bounding box that contains all the masks
+    # Computing the smallest bounding box that contains all the masks.
     x0 = int(detections.xyxy[:, 0].min())
     y0 = int(detections.xyxy[:, 1].min())
     x1 = int(detections.xyxy[:, 2].max())
     y1 = int(detections.xyxy[:, 3].max())
 
-    # adding padding
+    # Adding padding so the image is not cropped too tightly.
+    # Found that this improves the accuracy of the skew angle estimation.
     x0 = max(0, x0 - 10)
     y0 = max(0, y0 - 10)
     x1 = min(image.get_width(), x1 + 10)
