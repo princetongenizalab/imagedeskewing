@@ -1,5 +1,6 @@
 import os
 import cv2
+import numpy as np
 
 
 class Image:
@@ -17,7 +18,6 @@ class Image:
     -------
     load_image() -> np.ndarray
         Loads the image from path.
-
     as_array() -> np.ndarray
         Returns the image data as a numpy array.
     """
@@ -32,7 +32,7 @@ class Image:
         self.path = path
         self.image = self.load_image()
 
-    def load_image(self) -> "np.ndarray":
+    def load_image(self) -> np.ndarray:
         """
         Load the image from path and convert it to RGB format.
 
@@ -54,7 +54,7 @@ class Image:
 
         return image_rgb
 
-    def as_array(self) -> "np.ndarray":
+    def as_array(self) -> np.ndarray:
         """
         Get the loaded image data as a numpy array.
 
