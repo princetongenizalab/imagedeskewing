@@ -1,3 +1,4 @@
+import os
 import cv2
 
 
@@ -33,7 +34,7 @@ class Image:
 
     def load_image(self) -> "np.ndarray":
         """
-        Load the image using OpenCV (cv2) library, and convert it to RGB format.
+        Load the image from path and convert it to RGB format.
 
         Returns
         -------
@@ -45,14 +46,13 @@ class Image:
         FileNotFoundError
             If the specified file does not exist.
         """
-        try:
-            image = cv2.imread(self.path)
-            image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        if not os.path.exists(self.path):
+            raise FileNotFoundError(f"The specified image file {self.path} was not found.")
 
-            return image_rgb
+        image = cv2.imread(self.path)
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        except FileNotFoundError:
-            print(f"The specified image file {self.path} was not found.")
+        return image_rgb
 
     def get_image(self) -> "np.ndarray":
         """
