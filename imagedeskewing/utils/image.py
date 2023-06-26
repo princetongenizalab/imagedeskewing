@@ -20,8 +20,8 @@ class Image:
         Loads the image from path.
     as_array() -> np.ndarray
         Returns the image data as a numpy array.
-    rotate(angle: float) -> np.ndarray
-        Rotates the image by the specified angle.
+    rotated(angle: float) -> np.ndarray
+        Returns a rotated version of the image.
     get_height() -> int
         Returns the height of the image.
     get_width() -> int
@@ -93,14 +93,15 @@ class Image:
         """
         return self.image
 
-    def rotate(self, angle: float) -> np.ndarray:
+    def rotated(self, angle: float) -> np.ndarray:
         """
-        Rotate the image by the specified angle.
+        Returns a rotated version of the image.
 
         Parameters
         ----------
         angle : float
-            The angle to rotate the image by in degrees.
+            The angle to rotate the image by in degrees where an angle > 0 rotates the image counter-clockwise and
+            an angle < 0 rotates the image clockwise.
 
         Returns
         -------
