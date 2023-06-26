@@ -1,7 +1,7 @@
 import os
 import cv2
 import numpy as np
-
+from skimage.transform import rotate
 
 class Image:
     """
@@ -64,3 +64,19 @@ class Image:
             Image data in RGB format.
         """
         return self.image
+
+    def rotate(self, angle: float) -> np.ndarray:
+        """
+        Rotate the image by the specified angle.
+
+        Parameters
+        ----------
+        angle : float
+            The angle to rotate the image by in degrees.
+
+        Returns
+        -------
+        np.ndarray
+            The rotated image data.
+        """
+        return rotate(self.image, angle, resize=True)
