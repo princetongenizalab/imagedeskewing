@@ -1,0 +1,52 @@
+import argparse
+import cv2
+import numpy as np
+
+from bounding_box_generator import BoundingBoxGenerator
+from instance_segmentation_generator import InstanceSegmentationGenerator
+from utils.image import Image
+from document_skew_estimator import calculate_skew_angle
+
+
+def deskew_image(image_path: str, output_path: str):
+    """Deskew an image.
+
+    Parameters
+    ----------
+    image_path : str
+        The path to the image file to be deskewed.
+    output_path : str
+        The path to the output image file.
+    """
+    image = Image(image_path)
+
+    detections = BoundingBoxGenerator().generate_bounding_boxes(image.as_array())
+    detections.mask = InstanceSegmentationGenerator().segment_objects(image.as_array(), detections.xyxy)
+
+    # flatten the masks to a single mask
+    mask = np.any(detections.mask, axis=0)
+
+    # compute the smallest bounding box that contains all the masks
+    x0 = detections.xyxy[:, 0].min()
+    y0 = detections.xyxy[:, 1].min()
+    x1 = detections.xyxy[:, 2].max()
+    y1 = detections.xyxy[:, 3].max()
+
+    cropped_image = image.as_array()[y0:y1, x0:x1]
+
+    skew_angle = calculate_skew_angle(cropped_image)
+    rotated_image = image.rotate(skew_angle)
+    bgr_image = cv2.cvtColor(rotated_image, cv2.COLOR_RGB2BGR)
+    cv2.imwrite(output_path, bgr_image)
+
+
+def parse_args():
+    pass
+
+
+def main():
+    pass
+
+
+if __name__ == '__main__':
+    main()
