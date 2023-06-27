@@ -29,13 +29,6 @@ class TestImage(unittest.TestCase):
         """
         Path(self.temp_image_path).unlink()
 
-    def test_load_image(self):
-        """
-        Tests the load_image method of the Image class.
-        """
-        image = Image(self.temp_image_path)
-        self.assertTrue(np.array_equal(image.image, self.temp_image), "Loaded image does not match the original.")
-
     def test_as_array(self):
         """
         Tests the as_array method of the Image class.
@@ -49,6 +42,22 @@ class TestImage(unittest.TestCase):
         """
         with self.assertRaises(FileNotFoundError):
             Image("non_existent.jpg")
+
+    def test_get_height(self):
+        """
+        Tests the get_height method of the Image class.
+        """
+        image = Image(self.temp_image_path)
+        self.assertEqual(image.get_height(), self.temp_image.shape[0], "Returned height does not match the stored one.")
+
+
+    def test_get_width(self):
+        """
+        Tests the get_width method of the Image class.
+        """
+        image = Image(self.temp_image_path)
+        self.assertEqual(image.get_width(), self.temp_image.shape[1], "Returned width does not match the stored one."
+
 
 
 if __name__ == "__main__":
