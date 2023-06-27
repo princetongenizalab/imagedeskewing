@@ -48,10 +48,11 @@ def deskew_image(image_path: str, output_path: str):
 
     # Adding padding so the image is not cropped too tightly.
     # Found that this improves the accuracy of the skew angle estimation.
-    x0 = max(0, x0 - 10)
-    y0 = max(0, y0 - 10)
-    x1 = min(image.get_width(), x1 + 10)
-    y1 = min(image.get_height(), y1 + 10)
+    padding = 20
+    x0 = max(0, x0 - padding)
+    y0 = max(0, y0 - padding)
+    x1 = min(image.get_width(), x1 + padding)
+    y1 = min(image.get_height(), y1 + padding)
 
     cropped_image = image.as_array()[y0:y1, x0:x1]
 
