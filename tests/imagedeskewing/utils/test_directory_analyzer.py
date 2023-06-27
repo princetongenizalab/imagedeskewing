@@ -55,7 +55,7 @@ class TestDirectoryAnalyzer(unittest.TestCase):
 
         analyzer = DirectoryAnalyzer(self.test_dir)
         txt_file_count = analyzer.count_file_type(self.test_file_extensions[0])
-        self.assertEqual(txt_file_count, num_files)
+        self.assertEqual(txt_file_count, num_files, "The number of files counted is incorrect.")
 
     def test_count_file_type_no_files(self):
         """
@@ -66,7 +66,7 @@ class TestDirectoryAnalyzer(unittest.TestCase):
         """
         analyzer = DirectoryAnalyzer(self.test_dir)
         jpg_file_count = analyzer.count_file_type(".asdf")
-        self.assertEqual(jpg_file_count, 0)
+        self.assertEqual(jpg_file_count, 0, "The number of files counted is incorrect.")
 
     def test_count_all_file_types(self):
         """
@@ -83,7 +83,20 @@ class TestDirectoryAnalyzer(unittest.TestCase):
 
         analyzer = DirectoryAnalyzer(self.test_dir)
         actual_counts = analyzer.count_all_file_types()
-        self.assertEqual(actual_counts, expected_counts)
+        self.assertEqual(actual_counts, expected_counts, "The number of files counted is incorrect.")
+
+    def test_aggregate_files_by_type(self):
+        """
+        Test that the function aggregates the correct number of files of a given type.
+
+        The function should correctly aggregate the '.txt' files in the test directory.
+        """
+        num_files = 5
+        self.create_dummy_files(num_files, self.test_file_extensions[0])
+
+        analyzer = DirectoryAnalyzer(self.test_dir)
+        txt_files = analyzer.aggregate_files_by_type(self.test_dir, "txt")
+        self.assertEqual(len(txt_files), num_files, "The number of files aggregated is incorrect.")
 
 
 if __name__ == "__main__":
