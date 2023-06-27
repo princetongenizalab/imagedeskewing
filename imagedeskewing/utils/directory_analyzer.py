@@ -35,6 +35,8 @@ class DirectoryAnalyzer:
         dir_path : str
             The path of the directory to analyze.
         """
+        if not os.path.isdir(dir_path):
+            raise NotADirectoryError(f"{dir_path} is not a directory.")
         self.dir_path = dir_path
         self.file_types = defaultdict(int)
         self.file_sizes = defaultdict(int)
