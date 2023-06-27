@@ -19,6 +19,8 @@ class DirectoryAnalyzer:
 
     Methods
     -------
+    aggregate_files_by_type(directory, extension) -> List[str]:
+        Creates collection of files with a given extension in a given parent directory. Traverses all child directories.
     count_file_type(file_extension: str) -> int:
         Returns the count of files with a specific file type(extension) in the directory and its subdirectories.
     count_all_file_types() -> Dict[str, int]:
@@ -54,6 +56,31 @@ class DirectoryAnalyzer:
 
                 self.file_types[extension] += 1
                 self.file_sizes[extension] += os.path.getsize(os.path.join(root, file))
+
+    @staticmethod
+    def aggregate_files_by_type(directory, extension):
+        """
+        Creates collection of files with a given extension in a given parent directory. Traverses all child directories.
+
+        Parameters
+        ----------
+        directory : str
+            The root directory to search in.
+        extension : str
+            The file extension to search for.
+
+        Returns
+        -------
+        List[str]
+            A list of file paths with the given extension.
+        """
+        images = []
+        for root, _, files in os.walk(directory):
+            for file in files:
+                _, file_extension = os.path.splitext(file)
+                if file_extension.lower() == extension.lower():
+                    file_path = os.path.join(root, file)
+                    images.append(file_path)
 
     def count_file_type(self, file_extension: str) -> int:
         """
