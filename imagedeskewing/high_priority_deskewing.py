@@ -9,8 +9,8 @@ from instance_segmentation_generator import InstanceSegmentationGenerator
 from utils.image import Image
 from skimage.io import imsave
 
-
 from deskew import determine_skew
+
 
 def find_images(directory, extension):
     """
@@ -125,3 +125,7 @@ def main():
 
     df = pd.DataFrame(angles)
     df.to_csv("angles.csv", index=False)
+
+
+if __name__ == "__main__":
+    main()
