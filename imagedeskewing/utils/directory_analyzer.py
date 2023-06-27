@@ -78,9 +78,15 @@ class DirectoryAnalyzer:
         for root, _, files in os.walk(directory):
             for file in files:
                 _, file_extension = os.path.splitext(file)
+
+                # removing the period from the file extension
+                file_extension = file_extension[1:]
+
                 if file_extension.lower() == extension.lower():
                     file_path = os.path.join(root, file)
                     images.append(file_path)
+
+        return images
 
     def count_file_type(self, file_extension: str) -> int:
         """
