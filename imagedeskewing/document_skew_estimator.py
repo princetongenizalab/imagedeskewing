@@ -17,4 +17,4 @@ def calculate_skew_angle(image: np.ndarray) -> float:
         The skew angle of the image in degrees where an angle > 0 is a counter-clockwise rotation and an angle < 0 is a
         clockwise rotation.
     """
-    return determine_skew(image)
+    return determine_skew(image, min_deviation=0.025, num_peaks=100)
