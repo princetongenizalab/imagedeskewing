@@ -4,6 +4,7 @@ from skimage.transform import rotate
 from skimage.io import imread
 from skimage.util import img_as_ubyte
 
+
 class Image:
     """
     Image class for loading and handling image data.
@@ -17,8 +18,6 @@ class Image:
 
     Methods
     -------
-    load_image() -> np.ndarray
-        Loads the image from path.
     as_array() -> np.ndarray
         Returns the image data as a numpy array.
     rotated(angle: float) -> np.ndarray
@@ -37,7 +36,7 @@ class Image:
             The path to the image file to be loaded.
         """
         self.path = path
-        self.image = self.load_image()
+        self.image = self._load_image()
 
     def get_height(self) -> int:
         """
@@ -61,7 +60,7 @@ class Image:
         """
         return self.image.shape[1]
 
-    def load_image(self) -> np.ndarray:
+    def _load_image(self) -> np.ndarray:
         """
         Load the image from path and convert it to RGB format.
 
