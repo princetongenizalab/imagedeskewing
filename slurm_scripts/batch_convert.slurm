@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job=batch_image_conversion
-#SBATCH --output=slurm_job_output/batch_image_conversion_%j.out
-#SBATCH --error=slurm_job_output/batch_image_conversion_%j.err
+#SBATCH --output=batch_image_conversion_%j.out
+#SBATCH --error=batch_image_conversion_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
