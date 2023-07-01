@@ -1,6 +1,6 @@
 import os
 import argparse
-from PIL import Image
+import PIL
 
 
 class BatchConvert:
@@ -48,10 +48,14 @@ class BatchConvert:
         for root, dirs, files in os.walk(self.input_dir):
             for file in files:
                 if file.lower().endswith('.' + input_format.lower()):
-                    input_file = os.path.join(root, file)
-                    output_file = os.path.join(root, file.rsplit('.', 1)[0] + '.' + output_format)
-                    img = Image.open(input_file)
-                    img.save(output_file, output_format.upper(), quality=quality)
+                    input_path = os.path.join(root, file)
+                    output_path = os.path.join(root, file.rsplit('.', 1)[0] + '.' + output_format)
+                    try:
+                        img = PIL.Image.open(input_path)
+                    except PIL.UnidentifiedImageError:
+                        print(f'Failed to open {input_path}')
+                        continue
+                    img.save(output_path, output_format.upper(), quality=quality)
 
             # Only search through subdirectories if recursive flag is set
             if not self.recursive:
