@@ -14,4 +14,4 @@ module purge
 module load anaconda3/2023.3
 conda activate torch_env
 
-python /scratch/gpfs/eh0560/imagedeskewing/imagedeskewing/utils/batch_convert.py --input_dir /scratch/gpfs/RUSTOW/htr_deskewing_image_dataset --input_format tif --output_format jpg --quality 90 --recursive
+python /scratch/gpfs/eh0560/imagedeskewing/imagedeskewing/utils/batch_convert.py --input_dir /scratch/gpfs/RUSTOW/htr_deskewing_image_dataset --input_format tif --output_format jpeg --quality 90 --recursive
