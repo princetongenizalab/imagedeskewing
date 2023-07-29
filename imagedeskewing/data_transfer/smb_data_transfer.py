@@ -18,10 +18,10 @@ def setup_logger():
 
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     console_handler.setFormatter(formatter)
 
-    file_handler = RotatingFileHandler('smb_transfer.log', maxBytes=200000000, backupCount=5)
+    file_handler = RotatingFileHandler("smb_transfer.log", maxBytes=200000000, backupCount=5)
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
 
@@ -46,11 +46,11 @@ def download_file(remote_path, file_path):
     try:
         subprocess.run(command, shell=True, check=True, timeout=120)
     except subprocess.CalledProcessError as error:
-        logger.error(f'Error occurred while transferring {file_path}: {str(error)}')
+        logger.error(f"Error occurred while transferring {file_path}: {str(error)}")
     except subprocess.TimeoutExpired:
-        logger.error(f'Transfer of {file_path} timed out')
+        logger.error(f"Transfer of {file_path} timed out")
     except Exception as error:
-        logger.error(f'An unexpected error occurred while transferring {file_path}: {str(error)}')
+        logger.error(f"An unexpected error occurred while transferring {file_path}: {str(error)}")
 
 
 def download_all_files(remote_path, csv_file_path):
@@ -65,12 +65,12 @@ def download_all_files(remote_path, csv_file_path):
         Path to the CSV file containing file paths to download.
     """
     logger = logging.getLogger(__name__)
-    with open(csv_file_path, 'r') as file:
+    with open(csv_file_path, "r") as file:
         reader = csv.reader(file)
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             for row in reader:
                 file_path = row[0]  # assuming the file path is the first column in each row
-                logger.info(f'Downloading file {file_path}')
+                logger.info(f"Downloading file {file_path}")
                 executor.submit(download_file, remote_path, file_path)
 
 
@@ -80,6 +80,6 @@ if __name__ == "__main__":
     try:
         download_all_files("//path.to.remote/share", "/path/to/your/csvfile.csv")
     except OSError as e:
-        logger.error(f'Invalid directory or insufficient permissions: {str(e)}')
+        logger.error(f"Invalid directory or insufficient permissions: {str(e)}")
     except Exception as e:
-        logger.error(f'An unexpected error occurred: {str(e)}')
+        logger.error(f"An unexpected error occurred: {str(e)}")
