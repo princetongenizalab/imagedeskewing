@@ -10,13 +10,8 @@ def setup_logger():
 
     Setup a logger for the script that logs to both the console and a file. The log file is rotated when it reaches
     200MB and 5 backups are kept.
-
-    Returns
-    -------
-    logger : logging.Logger
-        Logger for the script.
     """
-    logger = logging.getLogger('smb_transfer')
+    logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
     console_handler = logging.StreamHandler()
@@ -31,21 +26,21 @@ def setup_logger():
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
 
-    return logger
 
 
-def transfer_file(file_path, logger):
+def download_file(remote_path, file_path):
     """
-    Transfer a file to the SMB share.
+    Download a file from the SMB share.
 
     Parameters
     ----------
+    remote_path : str
+        Path to the remote directory to transfer the file to.
     file_path : str
         Path to the file to transfer.
-    logger : logging.Logger
-        Logger for the script.
     """
-    command = (f'smbclient //172.19.70.125/NES_SCAD_Share -A smbcredentials -c'
+    logger = logging.getLogger(__name__)
+    command = (f'smbclient {remote_path} -A smbcredentials -c'
                f' "get {file_path} {file_path}"')
     try:
         subprocess.run(command, shell=True, check=True, timeout=120)
@@ -57,29 +52,31 @@ def transfer_file(file_path, logger):
         logger.error(f'An unexpected error occurred while transferring {file_path}: {str(error)}')
 
 
-def traverse_directory_and_transfer(directory_path, logger):
+def download_all_files(remote_path, directory_path):
     """
-    Traverse a directory and transfer all files to the SMB share.
+    Traverse a directory and download all files.
 
     Parameters
     ----------
+    remote_path : str
+        Path to the remote directory to transfer the files to.
     directory_path : str
         Path to the directory to traverse.
-    logger : logging.Logger
-        Logger for the script.
     """
+    logger = logging.getLogger(__name__)
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         for root, dirs, files in os.walk(directory_path):
             for file in files:
                 full_file_path = os.path.join(root, file)
-                logger.info(f'Transferring file {full_file_path}')
-                executor.submit(transfer_file, full_file_path, logger)
+                logger.info(f'Downloading file {full_file_path}')
+                executor.submit(download_file, remote_path, full_file_path)
 
 
 if __name__ == "__main__":
-    logger = setup_logger()
+    setup_logger()
+    logger = logging.getLogger(__name__)
     try:
-        traverse_directory_and_transfer("/path/to/your/directory", logger)
+        download_all_files("//path.to.remote/share", "/path/to/your/directory")
     except OSError as e:
         logger.error(f'Invalid directory or insufficient permissions: {str(e)}')
     except Exception as e:
