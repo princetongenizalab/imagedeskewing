@@ -3,6 +3,8 @@ import subprocess
 import logging
 from logging.handlers import RotatingFileHandler
 import concurrent.futures
+import csv
+
 
 def setup_logger():
     """
@@ -25,7 +27,6 @@ def setup_logger():
 
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
-
 
 
 def download_file(remote_path, file_path):
@@ -52,31 +53,32 @@ def download_file(remote_path, file_path):
         logger.error(f'An unexpected error occurred while transferring {file_path}: {str(error)}')
 
 
-def download_all_files(remote_path, directory_path):
+def download_all_files(remote_path, csv_file_path):
     """
-    Traverse a directory and download all files.
+    Read file paths from a CSV file and download each file.
 
     Parameters
     ----------
     remote_path : str
         Path to the remote directory to transfer the files to.
-    directory_path : str
-        Path to the directory to traverse.
+    csv_file_path : str
+        Path to the CSV file containing file paths to download.
     """
     logger = logging.getLogger(__name__)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        for root, dirs, files in os.walk(directory_path):
-            for file in files:
-                full_file_path = os.path.join(root, file)
-                logger.info(f'Downloading file {full_file_path}')
-                executor.submit(download_file, remote_path, full_file_path)
+    with open(csv_file_path, 'r') as file:
+        reader = csv.reader(file)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            for row in reader:
+                file_path = row[0]  # assuming the file path is the first column in each row
+                logger.info(f'Downloading file {file_path}')
+                executor.submit(download_file, remote_path, file_path)
 
 
 if __name__ == "__main__":
     setup_logger()
     logger = logging.getLogger(__name__)
     try:
-        download_all_files("//path.to.remote/share", "/path/to/your/directory")
+        download_all_files("//path.to.remote/share", "/path/to/your/csvfile.csv")
     except OSError as e:
         logger.error(f'Invalid directory or insufficient permissions: {str(e)}')
     except Exception as e:
