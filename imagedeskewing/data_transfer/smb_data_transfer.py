@@ -1,9 +1,9 @@
-import os
 import subprocess
 import logging
 from logging.handlers import RotatingFileHandler
 import concurrent.futures
 import csv
+from pathlib import Path
 
 
 def setup_logger():
@@ -69,9 +69,9 @@ def download_all_files(remote_path, csv_file_path):
         reader = csv.reader(file)
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             for row in reader:
-                file_path = row[0]  # assuming the file path is the first column in each row
+                file_path = Path(row[0]) # The first column in the CSV file contains the file path
                 logger.info(f"Downloading file {file_path}")
-                executor.submit(download_file, remote_path, file_path)
+                executor.submit(download_file, remote_path, str(file_path))
 
 
 if __name__ == "__main__":
