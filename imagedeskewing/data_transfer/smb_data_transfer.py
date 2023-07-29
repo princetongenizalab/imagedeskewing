@@ -2,7 +2,7 @@ import os
 import subprocess
 import logging
 from logging.handlers import RotatingFileHandler
-
+import concurrent.futures
 
 def setup_logger():
     """
@@ -68,11 +68,12 @@ def traverse_directory_and_transfer(directory_path, logger):
     logger : logging.Logger
         Logger for the script.
     """
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            full_file_path = os.path.join(root, file)
-            logger.info(f'Transferring file {full_file_path}')
-            transfer_file(full_file_path, logger)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        for root, dirs, files in os.walk(directory_path):
+            for file in files:
+                full_file_path = os.path.join(root, file)
+                logger.info(f'Transferring file {full_file_path}')
+                executor.submit(transfer_file, full_file_path, logger)
 
 
 if __name__ == "__main__":
