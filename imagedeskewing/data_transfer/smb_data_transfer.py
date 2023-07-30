@@ -73,18 +73,19 @@ def download_all_files(remote_path, csv_file_path):
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             for row in reader:
                 file_path = row[0] # The first column in the CSV file contains the file path
+                output_path = row[6]
                 drive_letter, rest_of_path = file_path.split(":", 1)
                 rest_of_path = rest_of_path.lstrip("\\")
                 file_path = rest_of_path.replace("\\", "/")
                 logger.info(f"Downloading file {file_path}")
-                executor.submit(download_file, remote_path, file_path, file_path)
+                executor.submit(download_file, remote_path, file_path, output_path)
 
 
 if __name__ == "__main__":
     setup_logger()
     logger = logging.getLogger(__name__)
     try:
-        download_all_files("//lockhart.princeton.edu/NES_SCAD_Share", "data/cairogeniza_index.csv")
+        download_all_files("//lockhart.princeton.edu/NES_SCAD_Share", "data/cairogeniza_tif_index_cleaned.csv")
     except OSError as e:
         logger.error(f"Invalid directory or insufficient permissions: {str(e)}")
     except Exception as e:
