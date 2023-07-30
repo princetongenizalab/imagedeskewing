@@ -67,6 +67,7 @@ def download_all_files(remote_path, csv_file_path):
     logger = logging.getLogger(__name__)
     with open(csv_file_path, "r") as file:
         reader = csv.reader(file)
+        next(reader)
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             for row in reader:
                 file_path = row[0] # The first column in the CSV file contains the file path
