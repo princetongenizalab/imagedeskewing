@@ -69,7 +69,10 @@ def download_all_files(remote_path, csv_file_path):
         reader = csv.reader(file)
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             for row in reader:
-                file_path = Path(row[0]) # The first column in the CSV file contains the file path
+                file_path = row[0] # The first column in the CSV file contains the file path
+                drive_letter, rest_of_path = file_path.split(":", 1)
+                rest_of_path = rest_of_path.lstrip("\\")
+                file_path = Path(rest_of_path)
                 logger.info(f"Downloading file {file_path}")
                 executor.submit(download_file, remote_path, str(file_path))
 
