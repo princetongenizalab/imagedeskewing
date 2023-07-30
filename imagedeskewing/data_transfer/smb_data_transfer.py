@@ -1,9 +1,9 @@
+import os
 import subprocess
 import logging
 from logging.handlers import RotatingFileHandler
 import concurrent.futures
 import csv
-from pathlib import Path
 
 
 def setup_logger():
@@ -29,20 +29,22 @@ def setup_logger():
     logger.addHandler(file_handler)
 
 
-def download_file(remote_path, file_path):
+def download_file(remote_host, file_path, local_path):
     """
     Download a file from the SMB share.
 
     Parameters
     ----------
-    remote_path : str
-        Path to the remote directory to transfer the file to.
+    remote_host : str
+        Path to the remote host to download the file from.
     file_path : str
         Path to the file to transfer.
+    local_path : str
+        Path to the save the file to locally.
     """
     logger = logging.getLogger(__name__)
-    command = (f'smbclient {remote_path} -A smbcredentials -c'
-               f' "get {file_path} {file_path}"')
+    command = (f'smbclient {remote_host} -A smbcredentials -c'
+               f' "get {file_path} {local_path}"')
     try:
         subprocess.run(command, shell=True, check=True, timeout=120)
     except subprocess.CalledProcessError as error:
@@ -73,16 +75,16 @@ def download_all_files(remote_path, csv_file_path):
                 file_path = row[0] # The first column in the CSV file contains the file path
                 drive_letter, rest_of_path = file_path.split(":", 1)
                 rest_of_path = rest_of_path.lstrip("\\")
-                file_path = Path(rest_of_path)
+                file_path = rest_of_path.replace("\\", "/")
                 logger.info(f"Downloading file {file_path}")
-                executor.submit(download_file, remote_path, str(file_path))
+                executor.submit(download_file, remote_path, file_path, file_path)
 
 
 if __name__ == "__main__":
     setup_logger()
     logger = logging.getLogger(__name__)
     try:
-        download_all_files("//path.to.remote/share", "/path/to/your/csvfile.csv")
+        download_all_files("//lockhart.princeton.edu/NES_SCAD_Share", "data/cairogeniza_index.csv")
     except OSError as e:
         logger.error(f"Invalid directory or insufficient permissions: {str(e)}")
     except Exception as e:
