@@ -45,13 +45,17 @@ def download_file(remote_host, file_path, local_path):
     command = (f'smbclient {remote_host} -A smbcredentials -c'
                f' "get {file_path} {local_path}"')
     try:
-        subprocess.run(command, shell=True, check=True, timeout=120)
+        process = subprocess.run(command, shell=True, check=True, timeout=120, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as error:
         logger.error(f"Error occurred while transferring {file_path}: {str(error)}")
     except subprocess.TimeoutExpired:
         logger.error(f"Transfer of {file_path} timed out")
     except Exception as error:
         logger.error(f"An unexpected error occurred while transferring {file_path}: {str(error)}")
+
+    if process.stdout:
+        stdout = process.stdout.decode("utf-8")
+        logger.info(f"command output for file {file_path} - {stdout}")
 
 
 def download_all_files(remote_path, csv_file_path):
