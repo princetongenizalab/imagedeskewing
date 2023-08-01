@@ -65,11 +65,12 @@ def download_all_files(remote_path, csv_file_path):
     Parameters
     ----------
     remote_path : str
-        Path to the remote directory to transfer the files to.
+        Path to the remote host to download the files from.
     csv_file_path : str
         Path to the CSV file containing file paths to download.
     """
     logger = logging.getLogger(__name__)
+    jobs = []
     with open(csv_file_path, "r") as file:
         reader = csv.reader(file)
         next(reader)
