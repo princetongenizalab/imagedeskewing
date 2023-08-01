@@ -88,7 +88,7 @@ if __name__ == "__main__":
     setup_logger()
     logger = logging.getLogger(__name__)
     try:
-        download_all_files("//lockhart.princeton.edu/NES_SCAD_Share", "data/cairogeniza_tif_index_cleaned.csv")
+        download_all_files("//lockhart.princeton.edu/NES_SCAD_Share", "data/eve_index_cleaned.csv")
     except OSError as e:
         logger.error(f"Invalid directory or insufficient permissions: {str(e)}")
     except Exception as e:
