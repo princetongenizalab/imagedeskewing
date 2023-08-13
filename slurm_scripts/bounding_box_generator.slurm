@@ -13,7 +13,7 @@
 
 module purge
 module load anaconda3/2023.3
-conda activate torch-env
+conda activate torch_env
 
 python generate_bounding_boxes.py
 ```
