@@ -4,7 +4,7 @@ from skimage.transform import rotate
 from skimage.io import imread
 from skimage.util import img_as_ubyte
 
-
+# TODO: rewrite this class to use PIL instead of skimage
 class Image:
     """
     Image class for loading and handling image data.
@@ -112,5 +112,6 @@ class Image:
         np.ndarray
             The rotated image data.
         """
+        # TODO: rewrite this so the class has a angle attribute and anytime the image is returned it is rotated
         rotated = rotate(self.image, angle, resize=True)
         return img_as_ubyte(rotated)
