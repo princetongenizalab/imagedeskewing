@@ -44,3 +44,4 @@ if __name__ == '__main__':
     directory = r"Z:\cairogeniza"
     df = create_file_index(directory)
     df.to_csv("index.csv", index=False)
+    

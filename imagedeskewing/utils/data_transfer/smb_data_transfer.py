@@ -73,16 +73,20 @@ def download_all_files(remote_path, csv_file_path):
     jobs = []
     with open(csv_file_path, "r") as file:
         reader = csv.reader(file)
-        next(reader)
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            for row in reader:
-                file_path = row[0]  # The first column in the CSV file contains the file path
-                output_path = row[6]
-                drive_letter, rest_of_path = file_path.split(":", 1)
-                rest_of_path = rest_of_path.lstrip("\\")
-                file_path = rest_of_path.replace("\\", "/")
-                logger.info(f"Downloading file {file_path}")
-                executor.submit(download_file, remote_path, file_path, output_path)
+        next(reader)  # Skip the header row
+        for row in reader:
+            file_path = row[0]  # The first column in the CSV file contains the file path
+            output_path = row[6]  # The seventh column in the CSV file contains the output path
+            # Magical code to convert windows path to posix path
+            drive_letter, rest_of_path = file_path.split(":", 1)
+            rest_of_path = rest_of_path.lstrip("\\")
+            file_path = rest_of_path.replace("\\", "/")
+            jobs.append((file_path, output_path))
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        for file_path, output_path in jobs:
+            logger.info(f"Downloading file {file_path}")
+            executor.submit(download_file, remote_path, file_path, output_path)
 
 
 if __name__ == "__main__":
