@@ -34,3 +34,6 @@ venv/
 Thumbs.db
 
 models/
+
+slurm_scripts/*.err
+slurm_scripts/*.out
