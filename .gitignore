@@ -32,3 +32,8 @@ venv/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+models/
+
+slurm_scripts/*.err
+slurm_scripts/*.out
