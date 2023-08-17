@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-def create_file_index(directory):
+def index(directory):
     """Create a pandas dataframe with file information for all files in a parent directory.
 
     Recursively walks through all subdirectories and returns a dataframe with all files in the parent directory.
@@ -42,6 +42,6 @@ def create_file_index(directory):
 
 if __name__ == '__main__':
     directory = r"Z:\cairogeniza"
-    df = create_file_index(directory)
+    df = index(directory)
     df.to_csv("index.csv", index=False)
     

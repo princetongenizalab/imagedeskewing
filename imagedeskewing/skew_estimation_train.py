@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision import models, transforms
 from sklearn.model_selection import train_test_split
-from utils.manuscript_dataset import ManuscriptDataset
+from imagedeskewing.utils.data_loders.manuscript_dataset import ManuscriptDataset
 
 # Image transformations
 transform = transforms.Compose([
@@ -12,7 +12,7 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-dataset = ManuscriptDataset(csv_file='data/ground_truth_labels.csv', transform=transform)
+dataset = ManuscriptDataset(csv_file='/scratch/gpfs/RUSTOW/jts_images/skew_information/ground_truth_image_data.csv', transform=transform)
 train_data, valid_data = train_test_split(dataset, test_size=0.2, random_state=42)
 
 train_loader = DataLoader(train_data, batch_size=32, shuffle=True)

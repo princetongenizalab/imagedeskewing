@@ -1,8 +1,6 @@
 from torch.utils.data import DataLoader, Dataset
 import pandas as pd
-import os
 from PIL import Image
-import torch
 
 
 class ManuscriptDataset(Dataset):
