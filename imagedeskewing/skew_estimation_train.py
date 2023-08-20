@@ -123,7 +123,8 @@ if __name__ == '__main__':
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
     reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=2, min_lr=1e-6)
     checkpoint = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor='val_loss', save_best_only=True)
+    tensorboard = tf.keras.callbacks.TensorBoard(log_dir='./logs')
 
     # Training the model
     history = model.fit(train_dataset, epochs=EPOCHS, validation_data=val_dataset,
-                        callbacks=[early_stopping, reduce_lr, checkpoint])
+                        callbacks=[early_stopping, reduce_lr, checkpoint, tensorboard])
