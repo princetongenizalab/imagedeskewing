@@ -18,8 +18,6 @@ def setup_logger():
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
-    return logger
-
 
 def get_all_items():
     logger = logging.getLogger(__name__)
@@ -40,7 +38,7 @@ def get_all_items():
 
 
 def get_item_json_data(item_id):
-    logger = setup_logger()
+    logger = logging.getLogger(__name__)
     base_url = f"https://cudl.lib.cam.ac.uk/view/{item_id}.json"
     logger.info(f"Getting item json data for {item_id}")
     response = requests.get(base_url)
@@ -61,7 +59,7 @@ def get_item_images_urls(item_id):
 
 
 def save_image(url, save_dir):
-    logger = setup_logger()
+    logger = logging.getLogger(__name__)
     response = requests.get(url)
     if response.status_code == 200:
         image = response.content
