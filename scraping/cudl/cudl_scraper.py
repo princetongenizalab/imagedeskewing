@@ -22,7 +22,7 @@ def setup_logger():
 
 
 def get_all_items():
-    logger = setup_logger()
+    logger = logging.getLogger(__name__)
     site_map_url = "https://cudl.lib.cam.ac.uk/sitemap.xml"
     logger.info("Getting sitemap")
     response = requests.get(site_map_url)
