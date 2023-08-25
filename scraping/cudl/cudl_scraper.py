@@ -3,6 +3,7 @@ import os
 import json
 import concurrent.futures as cf
 import logging
+from tqdm import tqdm
 
 
 def setup_logger():
@@ -12,8 +13,8 @@ def setup_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
 
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    ch = logging.StreamHandler()
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    ch = logging.FileHandler("logs/cudl_scraper.log")
     ch.setLevel(logging.INFO)
     ch.setFormatter(formatter)
     logger.addHandler(ch)
@@ -78,9 +79,11 @@ def main():
     logger = logging.getLogger(__name__)
     item_ids = get_all_items()
     image_urls = []
+
     with cf.ThreadPoolExecutor(max_workers=10) as executor:
         future_to_url = {executor.submit(get_item_images_urls, item_id): item_id for item_id in item_ids}
-        for future in cf.as_completed(future_to_url):
+        # Wrap the iterable with tqdm for progress bar
+        for future in tqdm(cf.as_completed(future_to_url), total=len(future_to_url), desc="Fetching URLs"):
             item_id = future_to_url[future]
             try:
                 data = future.result()
@@ -90,8 +93,9 @@ def main():
 
     save_dir = "/scratch/gpfs/RUSTOW/cudl_images"
     os.makedirs(save_dir, exist_ok=True)
-    with cf.ThreadPoolExecutor(max_workers=10) as executor:
-        executor.map(lambda x: save_image(x, save_dir), image_urls)
+    # Another tqdm for the saving process
+    for image_url in tqdm(image_urls, desc="Saving Images"):
+        save_image(image_url, save_dir)
 
 
 if __name__ == "__main__":
