@@ -77,7 +77,7 @@ def save_image(url, save_dir):
 def main():
     setup_logger()
     logger = logging.getLogger(__name__)
-    item_ids = get_all_items()[0:100]
+    item_ids = get_all_items()
     image_urls = []
 
     with cf.ThreadPoolExecutor(max_workers=32) as executor:
