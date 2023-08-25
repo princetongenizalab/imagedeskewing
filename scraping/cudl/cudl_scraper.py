@@ -77,10 +77,10 @@ def save_image(url, save_dir):
 def main():
     setup_logger()
     logger = logging.getLogger(__name__)
-    item_ids = get_all_items()
+    item_ids = get_all_items()[0:100]
     image_urls = []
 
-    with cf.ThreadPoolExecutor(max_workers=10) as executor:
+    with cf.ThreadPoolExecutor(max_workers=32) as executor:
         future_to_url = {executor.submit(get_item_images_urls, item_id): item_id for item_id in item_ids}
         # Wrap the iterable with tqdm for progress bar
         for future in tqdm(cf.as_completed(future_to_url), total=len(future_to_url), desc="Fetching URLs"):
@@ -95,7 +95,7 @@ def main():
     os.makedirs(save_dir, exist_ok=True)
 
     # Multithreaded image saving
-    with cf.ThreadPoolExecutor(max_workers=10) as executor:
+    with cf.ThreadPoolExecutor(max_workers=32) as executor:
         # Combine the tqdm progress bar with multithreaded image saving
         list(tqdm(executor.map(lambda url: save_image(url, save_dir), image_urls), total=len(image_urls),
                   desc="Saving Images"))
