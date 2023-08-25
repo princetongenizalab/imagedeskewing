@@ -93,9 +93,12 @@ def main():
 
     save_dir = "/scratch/gpfs/RUSTOW/cudl_images"
     os.makedirs(save_dir, exist_ok=True)
-    # Another tqdm for the saving process
-    for image_url in tqdm(image_urls, desc="Saving Images"):
-        save_image(image_url, save_dir)
+
+    # Multithreaded image saving
+    with cf.ThreadPoolExecutor(max_workers=10) as executor:
+        # Combine the tqdm progress bar with multithreaded image saving
+        list(tqdm(executor.map(lambda url: save_image(url, save_dir), image_urls), total=len(image_urls),
+                  desc="Saving Images"))
 
 
 if __name__ == "__main__":
