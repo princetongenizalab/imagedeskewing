@@ -60,6 +60,7 @@ def get_item_images_urls(item_id):
 
 def save_image(url, save_dir):
     logger = logging.getLogger(__name__)
+    logger.info(f"Saving image from {url}")
     response = requests.get(url)
     if response.status_code == 200:
         image = response.content
