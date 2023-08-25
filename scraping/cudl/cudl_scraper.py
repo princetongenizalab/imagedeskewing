@@ -74,6 +74,14 @@ def save_image(url, save_dir):
         raise requests.exceptions.HTTPError("Could not get image")
 
 
+def safe_save_image(url, save_dir):
+    try:
+        save_image(url, save_dir)
+    except Exception as e:
+        logger = logging.getLogger(__name__)
+        logger.error(f"Could not save image from {url}: {e}")
+
+
 def main():
     setup_logger()
     logger = logging.getLogger(__name__)
@@ -97,7 +105,7 @@ def main():
     # Multithreaded image saving
     with cf.ThreadPoolExecutor(max_workers=32) as executor:
         # Combine the tqdm progress bar with multithreaded image saving
-        list(tqdm(executor.map(lambda url: save_image(url, save_dir), image_urls), total=len(image_urls),
+        list(tqdm(executor.map(lambda url: safe_save_image(url, save_dir), image_urls), total=len(image_urls),
                   desc="Saving Images"))
 
 
